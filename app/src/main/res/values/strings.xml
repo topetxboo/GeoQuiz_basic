@@ -6,4 +6,7 @@
     <string name="question1">Question1</string>
     <string name="question2">Question2</string>
     <string name="question3">Question3</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

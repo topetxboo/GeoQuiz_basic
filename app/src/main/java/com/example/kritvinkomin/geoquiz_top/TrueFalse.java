@@ -8,7 +8,7 @@ public class TrueFalse {
     boolean mtrueQuestion;
 
 
-    public TrueFalse (int question , boolean trueQuestion){
+    public TrueFalse (int question , boolean trueQuestion){  //value of String question and return True or False of question
         mQuestion = question;
         mtrueQuestion = trueQuestion;
     }
@@ -16,6 +16,7 @@ public class TrueFalse {
     public int getQuestion(){
         return  mQuestion;
     }
+
     public boolean isTrueQuestion (){
         return mtrueQuestion;
     }

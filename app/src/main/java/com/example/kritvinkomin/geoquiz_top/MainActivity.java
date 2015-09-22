@@ -1,7 +1,10 @@
 package com.example.kritvinkomin.geoquiz_top;
 
+import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String TAG = "QuizActivity";
+    public static final String KEY_INDEX = "index";
     Button bCorrect , bFalse;
     TextView tvQuestion;
     private int mCurrentIndex = 0;
@@ -19,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
             new TrueFalse(R.string.question3, false),
     };
 
+
     private void updateQuestion(){    //update the question
-        mCurrentIndex = (mCurrentIndex + 1 ) % mQuestionBank.length; // increment through array
         int question = mQuestionBank[mCurrentIndex].getQuestion(); //get new textview question
         tvQuestion.setText(question);
     }
@@ -28,15 +34,27 @@ public class MainActivity extends AppCompatActivity {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isTrueQuestion();  // check from array if answer is true
         if (userPressTrue == answerIsTrue){          //if onClick match the TF of the question
             Toast.makeText(MainActivity.this, "Correct", Toast.LENGTH_SHORT).show();
+            mCurrentIndex = (mCurrentIndex + 1 ) % mQuestionBank.length; // increment through array
             updateQuestion();
         }else{
             Toast.makeText(MainActivity.this, "NoCorrect", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i("TAG", "On save instance called");
+        savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i(TAG, "hello from onCreate");
+
+
         tvQuestion = (TextView)findViewById(R.id.tv1);
 
         bCorrect = (Button)findViewById(R.id.bCorrect);
@@ -53,14 +71,38 @@ public class MainActivity extends AppCompatActivity {
                 checkAnswer(false);
             }
         });
+
+
+        if (savedInstanceState != null) {   //pass savedInstanceState to onCreate
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
+
+        updateQuestion();
     }
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "hello from onStart");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
     }
 
     @Override
